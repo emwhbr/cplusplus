@@ -1,0 +1,27 @@
+C++ class 'reporter' is implemented using the singleton design pattern.
+The instantiation of 'reporter' is restricted to one object. This is useful
+when exactly one object is needed to coordinate output across the application.
+
+In this example is output sent to STDOUT, but the concept could be further
+developed and output could be sent anywhere (RS232, Ethernet, memory buffer...).
+Output is centralized to one singleton object.
+
+Files:
+------
+reporter.h		Implements the
+reporter.cpp		C++ class 'reporter'
+
+test_reporter.cpp	Test application
+
+Makefile		Makefile for this project
+
+README			This file
+
+Expected output from test application:
+--------------------------------------
+PUT_LINE: cnt=1
+PUT: cnt=2, PUT: cnt=3
+... skipping output from reporter ...
+PUT_LINE_ALWAYS: cnt=7
+PUT_ALWAYS: cnt=8, PUT_ALWAYS: cnt=9
+cnt=9, expected=9
