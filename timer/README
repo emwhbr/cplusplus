@@ -1,0 +1,32 @@
+C++ class 'timer' encapsulates functionality for time measurement in Linux.
+
+The class is based on 'clock_gettime' and tries to make use of one of the
+following clock identifiers: 
+ CLOCK_MONOTONIC_RAW
+ CLOCK_MONOTONIC
+ CLOCK_REALTIME
+
+CLOCK_MONOTONIC_RAW is unaffected by any NTP- or manual adjustments of
+the system clock. This clock identifer may not be available on all systems.
+
+Files:
+------
+timer.h		Implements the
+timer.cpp	C++ class 'timer'
+
+test_timer.cpp	Test application
+
+Makefile	Makefile for this project
+
+README		This file
+
+Example output from test application:
+-------------------------------------
+Timer 1, Elapsed: 3.000628
+         Running: 3.000629
+
+Timer 2, Elapsed: 3.000630
+         Running: 2.000416
+
+Sleep poll was activated 5 times
+
