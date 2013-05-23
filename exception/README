@@ -1,0 +1,79 @@
+C++ class 'excep' defines an exception class which is able
+to store information about an error. This includes
+ * Callstack
+ * Source file name and line number
+ * Information string
+ * User defined codes
+
+'addr2line' can be used to translate addresses from the 
+generated callstack into file names and line numbers.
+For more information on how to do this, see examples below.
+
+Note! Assumes 64-bit addresses.
+
+Files:
+------
+excep.h			Implements the
+excep.cpp		C++ class 'timer'
+
+test_basic_excep.cpp	Test application
+
+Makefile		Makefile for this project
+
+README			This file
+
+
+Example output from test application (test_basic_excep.cpp):
+------------------------------------------------------------
+
+------------ EXCEP : BEGIN ------------
+source:1, code:11
+info:Test with cnt=1972
+stack frames:6
+frame:00  addr:0x000000000040193e
+frame:01  addr:0x00000000004021ea
+frame:02  addr:0x000000000040228a
+frame:03  addr:0x0000000000402303
+frame:04  addr:0x00007f464fe29a15
+frame:05  addr:0x0000000000401669
+test_basic_excep.cpp:27, void generate_exception(long int, long int, std::string)
+------------ EXCEP : END ------------
+
+stack frames:6
+	frame:00  addr:0x000000000040193e
+	frame:01  addr:0x00000000004021ea
+	frame:02  addr:0x000000000040228a
+	frame:03  addr:0x0000000000402303
+	frame:04  addr:0x00007f464fe29a15
+	frame:05  addr:0x0000000000401669
+	Violator: test_basic_excep.cpp:27, generate_exception
+	Source: 1, Code: 11
+	Info: Test with cnt=1972
+
+
+Examine the callstack using 'addr2line':
+----------------------------------------
+
+addr2line -f 0x000000000040193e -e obj/test_basic_excep_dbg.x86_64 
+_ZN5excepC2EPKciS1_llS1_z
+/proj/c++/emwhbr_github/cplusplus/exception/excep.cpp:53
+
+addr2line -f 0x00000000004021ea -e obj/test_basic_excep_dbg.x86_64 
+_Z18generate_exceptionllSs
+/proj/c++/emwhbr_github/cplusplus/exception/test_basic_excep.cpp:27 (discriminator 2)
+
+addr2line -f 0x000000000040228a -e obj/test_basic_excep_dbg.x86_64 
+_Z14test_exceptionv
+/proj/c++/emwhbr_github/cplusplus/exception/test_basic_excep.cpp:40 (discriminator 1)
+
+addr2line -f 0x0000000000402303 -e obj/test_basic_excep_dbg.x86_64 
+main
+/proj/c++/emwhbr_github/cplusplus/exception/test_basic_excep.cpp:72
+
+addr2line -f 0x00007f464fe29a15 -e obj/test_basic_excep_dbg.x86_64 
+??
+??:0
+
+addr2line -f 0x0000000000401669 -e obj/test_basic_excep_dbg.x86_64 
+_start
+/home/abuild/rpmbuild/BUILD/glibc-2.17/csu/../sysdeps/x86_64/start.S:126
