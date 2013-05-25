@@ -1,0 +1,42 @@
+C++ class 'thread' is an abstract base class that encapsulates
+functionality for creating and managing threads (Pthreads).
+
+Derived classes must implement the pure virtual functions:
+ * setup
+ * execute
+ * cleanup
+These functions will be executed from the context of a thread
+that is unique for each created object of the derived class.
+
+Files:
+------
+thread.h		Implements the
+thread.cpp		abstract base C++ class 'thread'
+
+test_basic_excep.cpp	Test application
+
+worker_thread.cpp	Example of a derived class
+worker_thread.h	        implementing the pure virtual functions
+
+Makefile		Makefile for this project
+
+README			This file
+
+Example output from test application (test_thread.cpp):
+-------------------------------------------------------
+
+worker_thread::worker_thread = TEST-WORKER
+worker_thread::setup = TEST-WORKER
+Thread name: TEST-WORKER, PID: 19382, TID: 19383
+About to sleep, let thread work
+worker_thread::execute = TEST-WORKER
+worker_thread::cleanup = TEST-WORKER
+
+g_worker_data[0] = 0
+g_worker_data[1] = 0
+g_worker_data[2] = 0
+g_worker_data[3] = 10
+g_worker_data[4] = 0
+
+thread exe count = 10
+worker_thread::~worker_thread = TEST-WORKER
