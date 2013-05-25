@@ -13,7 +13,7 @@ Files:
 thread.h		Implements the
 thread.cpp		abstract base C++ class 'thread'
 
-test_basic_excep.cpp	Test application
+test_thread.cpp		Test application
 
 worker_thread.cpp	Example of a derived class
 worker_thread.h	        implementing the pure virtual functions
