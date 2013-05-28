@@ -1,0 +1,31 @@
+C/C++ support that allows the calling thread to sleep in Linux.
+
+The code is based on 'clock_nanosleep' and tries to make use of one of the
+following clock identifiers: 
+ CLOCK_MONOTONIC
+ CLOCK_REALTIME
+
+CLOCK_MONOTONIC is unaffected by any manual adjustments of the system clock.
+But it is affected by the incremental adjustments performed by NTP.
+
+The code uses flag TIMER_ABSTIME to sleep until an absolute time. This is
+done to avoid the need of repeatedly recalculating time to sleep.
+
+Files:
+------
+delay.h		Implements the
+delay.cpp	C++ class 'timer'
+
+test_delay.cpp	Test application
+
+Makefile	Makefile for this project
+
+README		This file
+
+Example output from test application:
+-------------------------------------
+Requested delay: 0.005000, Actual: 0.005111
+
+Total time using delay: 5.111828
+
+Total time using delay_until: 5.000001
