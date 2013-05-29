@@ -80,9 +80,9 @@ class thread {
   void update_exe_cnt(void);
   bool is_stopped(void);
   
-  virtual long setup(void) = 0;        // Pure virtual
-  virtual long execute(void *arg) = 0; // Pure virtual
-  virtual long cleanup(void) = 0;      // Pure virtual
+  virtual long setup(void) = 0;        // Pure virtual function
+  virtual long execute(void *arg) = 0; // Pure virtual function
+  virtual long cleanup(void) = 0;      // Pure virtual function
     
  private:
   string m_thread_name;

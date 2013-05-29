@@ -1,3 +1,4 @@
+(1)
 C++ class 'thread' is an abstract base class that encapsulates
 functionality for creating and managing threads (Pthreads).
 
@@ -8,19 +9,38 @@ Derived classes must implement the pure virtual functions:
 These functions will be executed from the context of a thread
 that is unique for each created object of the derived class.
 
+(2)
+C++ class 'cyclic_thread' is an abstract base class derived
+from class 'thread'. Implements the pure virtual function
+'execute' which enables cyclic execution within the thread.
+
+Derived classes must implement the pure virtual functions:
+ * setup
+ * cyclic_execute
+ * cleanup
+These functions will be executed from the context of a thread
+that is unique for each created object of the derived class.
+
 Files:
 ------
-thread.h		Implements the
-thread.cpp		abstract base C++ class 'thread'
+thread.h		   Implements the
+thread.cpp		   abstract base C++ class 'thread'
 
-test_thread.cpp		Test application
+cyclic_thread.h		   Implements the
+cyclic_thread.cpp	   abstract base C++ class 'cyclic_thread'
 
-worker_thread.cpp	Example of a derived class
-worker_thread.h	        implementing the pure virtual functions
+test_thread.cpp		   Test application (test_app1)
+test_cyclic_thread.cpp	   Test application (test_app2)
 
-Makefile		Makefile for this project
+worker_thread.cpp	   Example of a derived class of 'thread'
+worker_thread.h	           implementing the pure virtual functions
 
-README			This file
+worker_cyclic_thread.cpp   Example of a derived class of 'cyclic_thread'
+worker_cyclic_thread.h	   implementing the pure virtual functions
+
+Makefile		   Makefile for this project
+
+README			   This file
 
 Example output from test application (test_thread.cpp):
 -------------------------------------------------------
@@ -40,3 +60,34 @@ g_worker_data[4] = 0
 
 thread exe count = 10
 worker_thread::~worker_thread = TEST-WORKER
+
+Example output from test application (test_cyclic_thread.cpp):
+--------------------------------------------------------------
+
+worker_cyclic_thread::worker_cyclic_thread = TEST-CYCLIC-WORKER
+worker_cyclic_thread::setup = TEST-CYCLIC-WORKER
+Thread name: TEST-CYCLIC-WORKER, PID: 20260, TID: 20261
+About to sleep, let cyclic thread work
+---TEST-CYCLIC-WORKER (min) : 0.0199969 cycle : 1
++++TEST-CYCLIC-WORKER (max) : 0.0199969 cycle : 1
++++TEST-CYCLIC-WORKER (max) : 0.0200013 cycle : 2
+---TEST-CYCLIC-WORKER (min) : 0.0199741 cycle : 4
++++TEST-CYCLIC-WORKER (max) : 0.0200226 cycle : 5
+---TEST-CYCLIC-WORKER (min) : 0.0199465 cycle : 6
++++TEST-CYCLIC-WORKER (max) : 0.020051 cycle : 7
++++TEST-CYCLIC-WORKER (max) : 0.0201052 cycle : 34
+---TEST-CYCLIC-WORKER (min) : 0.0198779 cycle : 35
++++TEST-CYCLIC-WORKER (max) : 0.0201124 cycle : 941
++++TEST-CYCLIC-WORKER (max) : 0.0201151 cycle : 982
+---TEST-CYCLIC-WORKER (min) : 0.0198748 cycle : 2284
+worker_cyclic_thread::cleanup = TEST-CYCLIC-WORKER
+
+thread min period = 0.019875
+thread max period = 0.020115
+thread avg period = 0.019999
+thread exe count  = 3000
+
+thread expected frequency : 50.000000 Hz
+thread expected period    : 0.020000 s
+worker_cyclic_thread::~worker_cyclic_thread = TEST-CYCLIC-WORKER
+

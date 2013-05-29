@@ -9,10 +9,8 @@
 // *                                                                      *
 // ************************************************************************
 
-#ifndef __WORKER_THREAD_H__
-#define __WORKER_THREAD_H__
-
-#include <stdint.h>
+#ifndef __CYCLIC_THREAD_H__
+#define __CYCLIC_THREAD_H__
 
 #include "thread.h"
 
@@ -22,30 +20,29 @@ using namespace std;
 //               Definition of macros
 /////////////////////////////////////////////////////////////////////////////
 
-#define WORKER_MAX_THREADS 5
-
-typedef uint32_t WORKER_DATA;
+// Return codes
+#define THREAD_TIME_ERROR  (THREAD_INTERNAL_ERROR - 1)
 
 /////////////////////////////////////////////////////////////////////////////
 //               Definition of classes
 /////////////////////////////////////////////////////////////////////////////
 
-class worker_thread : public thread {
+class cyclic_thread : public thread {
 
  public:
-  worker_thread(string thread_name,
-		unsigned work_id,
-		unsigned long data_base_addr);
-  ~worker_thread(void);
+  cyclic_thread(string thread_name,
+		double frequency);
+  ~cyclic_thread(void);
 
  protected:
-  virtual long setup(void);        // Implements pure virtual function from base class
+  virtual long setup(void) = 0;    // Pure virtual function
   virtual long execute(void *arg); // Implements pure virtual function from base class
-  virtual long cleanup(void);      // Implements pure virtual function from base class
+  virtual long cleanup(void) = 0;  // Pure virtual function
+
+  virtual long cyclic_execute(void) = 0; // Pure virtual function
     
  private:
-  unsigned m_work_id;
-  unsigned long m_data_base_addr;
+  double m_frequency;
 };
 
-#endif // __WORKER_THREAD_H__
+#endif // __CYCLIC_THREAD_H__

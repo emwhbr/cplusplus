@@ -9,43 +9,45 @@
 // *                                                                      *
 // ************************************************************************
 
-#ifndef __WORKER_THREAD_H__
-#define __WORKER_THREAD_H__
+#ifndef __WORKER_CYCLIC_THREAD_H__
+#define __WORKER_CYCLIC_THREAD_H__
 
-#include <stdint.h>
-
-#include "thread.h"
+#include "cyclic_thread.h"
+#include "timer.h"
 
 using namespace std;
-
-/////////////////////////////////////////////////////////////////////////////
-//               Definition of macros
-/////////////////////////////////////////////////////////////////////////////
-
-#define WORKER_MAX_THREADS 5
-
-typedef uint32_t WORKER_DATA;
 
 /////////////////////////////////////////////////////////////////////////////
 //               Definition of classes
 /////////////////////////////////////////////////////////////////////////////
 
-class worker_thread : public thread {
+class worker_cyclic_thread : public cyclic_thread {
 
  public:
-  worker_thread(string thread_name,
-		unsigned work_id,
-		unsigned long data_base_addr);
-  ~worker_thread(void);
+  worker_cyclic_thread(string thread_name,
+		       double frequency);
+  ~worker_cyclic_thread(void);
+
+  double get_min_period(void) {return m_min_period;}
+  double get_max_period(void) {return m_max_period;}
+  double get_avg_period(void) {return m_avg_period;}
 
  protected:
-  virtual long setup(void);        // Implements pure virtual function from base class
-  virtual long execute(void *arg); // Implements pure virtual function from base class
-  virtual long cleanup(void);      // Implements pure virtual function from base class
+  virtual long setup(void);   // Implements pure virtual function from base class
+  virtual long cleanup(void); // Implements pure virtual function from base class
+
+  virtual long cyclic_execute(void); // Implements pure virtual function from base class
     
  private:
-  unsigned m_work_id;
-  unsigned long m_data_base_addr;
+  timer m_period_timer;
+
+  double m_min_period;
+  double m_max_period;
+  double m_avg_period;
+  double m_tot_period;
+  bool   m_first_cycle;
+
+  void init_members(void);
 };
 
-#endif // __WORKER_THREAD_H__
+#endif // __WORKER_CYCLIC_THREAD_H__

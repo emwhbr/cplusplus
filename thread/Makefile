@@ -35,11 +35,25 @@ endif
 OBJ_DIR = ./obj
 INC_DIR = ./
 
-TEST_OBJS = $(OBJ_DIR)/thread.o \
-            $(OBJ_DIR)/worker_thread.o \
-	    $(OBJ_DIR)/test_thread.o
+TEST_OBJS1 = $(OBJ_DIR)/thread.o \
+             $(OBJ_DIR)/worker_thread.o \
+	     $(OBJ_DIR)/test_thread.o
 
-TEST_APP_NAME = $(OBJ_DIR)/test_thread_$(KIND).$(ARCH)
+TEST_OBJS2 = $(OBJ_DIR)/thread.o \
+             $(OBJ_DIR)/cyclic_thread.o \
+             $(OBJ_DIR)/worker_cyclic_thread.o \
+             $(OBJ_DIR)/test_cyclic_thread.o
+
+COMMON_CODE_DIR = ..
+
+DELAY_DIR = $(COMMON_CODE_DIR)/delay
+TIMER_DIR = $(COMMON_CODE_DIR)/timer
+
+DELAY_OBJ = $(OBJ_DIR)/delay.o
+TIMER_OBJ = $(OBJ_DIR)/timer.o
+
+TEST_APP_NAME1 = $(OBJ_DIR)/test_thread_$(KIND).$(ARCH)
+TEST_APP_NAME2 = $(OBJ_DIR)/test_cyclic_thread_$(KIND).$(ARCH)
 
 # ----- Compiler flags
 
@@ -52,7 +66,9 @@ COMP_FLAGS = $(LINK_FLAGS) -c
 
 # ----- Includes
 
-TEST_INCLUDE  = -I$(INC_DIR)
+TEST_INCLUDE  = -I$(INC_DIR) -I$(DELAY_DIR) -I$(TIMER_DIR)
+DELAY_INCLUDE = -I$(DELAY_DIR)
+TIMER_INCLUDE = -I$(TIMER_DIR)
 
 INCLUDE = $(TEST_INCLUDE)
 
@@ -72,18 +88,28 @@ $(OBJ_DIR)/%.o : %.c
 $(OBJ_DIR)/%.o : %.cpp
 	$(CPP) $(COMP_FLAGS) $(INCLUDE) -o $@ $<
 
+$(DELAY_OBJ) : $(DELAY_DIR)/delay.cpp
+	$(CPP) $(COMP_FLAGS) $(DELAY_INCLUDE) -o $@ $(DELAY_DIR)/delay.cpp
+
+$(TIMER_OBJ) : $(TIMER_DIR)/timer.cpp
+	$(CPP) $(COMP_FLAGS) $(DELAY_INCLUDE) -o $@ $(TIMER_DIR)/timer.cpp
+
 # ------ Targets
 
 .PHONY : clean help
 
-test_app : $(TEST_OBJS)
-	$(CC) $(LINK_FLAGS) -o $(TEST_APP_NAME) $(TEST_OBJS) $(LIBS)
+test_app1 : $(TEST_OBJS1)
+	$(CC) $(LINK_FLAGS) -o $(TEST_APP_NAME1) $(TEST_OBJS1) $(LIBS)
+
+test_app2 : $(TEST_OBJS2) $(DELAY_OBJ) $(TIMER_OBJ)
+	$(CC) $(LINK_FLAGS) -o $(TEST_APP_NAME2) $(TEST_OBJS2) $(DELAY_OBJ) $(TIMER_OBJ) $(LIBS)
 
 all : test_app
 
 clean :
-	rm -f $(TEST_OBJS) $(OBJ_DIR)/*.$(ARCH) *~
+	rm -f $(TEST_OBJS1) $(TEST_OBJS2) $(DELAY_OBJ) $(TIMER_OBJ) $(OBJ_DIR)/*.$(ARCH) *~
 
 help:
 	@echo "Usage: make clean"
-	@echo "       mapp test_app"
+	@echo "       mapp test_app1"
+	@echo "       mapp test_app2"
