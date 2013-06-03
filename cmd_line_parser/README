@@ -1,0 +1,44 @@
+C++ class 'CCmdLine' parses application command line arguments.
+
+This class was written by Chris Losinger, Smaller Animals Software.
+http://www.smalleranimals.com
+
+The source code was primary written for use with Windows and MFC.
+Minor adjustments to the code have been done to make it run on Linux.
+All changes to the code have been marked with the comment "EMWHBR".
+
+Files:
+------
+cmd_line.h		Implements the
+cmd_line.cpp		C++ class 'CCmdLine'
+
+test_cmd_line.cpp	Test application
+
+Makefile		Makefile for this project
+
+README			This file
+
+Example output from test application:
+-------------------------------------
+
+> test_cmd_line_dbg.x86_64
+------------- COMMAND LINE ARGUMENTS ------------
+
+g_remote_ip_addr : 192.168.100.17
+g_remote_port    : 24000
+g_local_port     : 14000
+g_delay          : 0.1
+g_verbose        : 0
+
+-------------------------------------------------
+
+> test_cmd_line_dbg.x86_64 -delay 12.34 -v -tcp 4.5.6.7 88 99
+------------- COMMAND LINE ARGUMENTS ------------
+
+g_remote_ip_addr : 4.5.6.7
+g_remote_port    : 88
+g_local_port     : 99
+g_delay          : 12.34
+g_verbose        : 1
+
+-------------------------------------------------
