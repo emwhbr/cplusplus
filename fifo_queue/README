@@ -1,0 +1,20 @@
+C++ class 'fifo_queue' implements a simple FIFO queue that shall
+be used by one pair of threads acting as producer/consumer.
+
+The queue is protected by semaphores. This makes it impossible
+to 'put' data when queue is full or 'get' data when queue is empty.
+Calling threads will be blocked until queue is stabilized. Non-
+blocking behaviour is also possible by using proper flags.
+
+Files:
+------
+fifo_queue.h	      Implements the
+fifo_queue.cpp	      C++ class 'thread'
+
+test_fifo_queue.cpp   Test application
+
+Makefile	      Makefile for this project
+
+README		      This file
+
+test_output.txt	      Example output from test application
