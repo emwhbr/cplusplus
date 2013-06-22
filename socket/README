@@ -1,0 +1,89 @@
+C/C++ support for internet socket communication using IPv4.
+
+Files:
+------
+socket_support.h	   Implements the
+socket_support.cpp	   C++ socket support (not a class)
+
+test_socket.cpp		   Test application (test_app1)
+test_tcp_socket.cpp	   Test application (test_app2)
+test_udp_socket.cpp	   Test application (test_app3)
+
+Makefile		   Makefile for this project
+
+README			   This file
+
+Example output from test application (test_socket.cpp):
+-------------------------------------------------------
+
+u64 (host):0x0102030405060708
+08 07 06 05 04 03 02 01
+u64 (net):0x0807060504030201
+01 02 03 04 05 06 07 08
+u64 (host):0x0102030405060708
+08 07 06 05 04 03 02 01
+
+u64 (host):0xcafedeca01020304
+04 03 02 01 ca de fe ca
+u64 (net):0x04030201cadefeca
+ca fe de ca 01 02 03 04
+u64 (host):0xcafedeca01020304
+04 03 02 01 ca de fe ca
+u32 (host):0xdeadbeef
+ef be ad de
+u32 (net):0xefbeadde
+de ad be ef
+u32 (host):0xdeadbeef
+ef be ad de
+
+Net-address (classic)  : 0xc0a86411
+Net-address (any)      : 0x00000000
+Net-address (loopback) : 0x7f000001
+Net-address (broadcast): 0xffffffff
+IP-address (classic)  : 192.168.100.17
+IP-address (any)      : 0.0.0.0
+IP-address (loopback) : 127.0.0.1
+IP-address (broadcast): 255.255.255.255
+
+Net-addr=0xadc22030 (173.194.32.48),	protocol=0006, socktype=0001
+Net-addr=0xadc22030 (173.194.32.48),	protocol=0017, socktype=0002
+Net-addr=0xadc22030 (173.194.32.48),	protocol=0000, socktype=0003
+Net-addr=0xadc22032 (173.194.32.50),	protocol=0006, socktype=0001
+Net-addr=0xadc22032 (173.194.32.50),	protocol=0017, socktype=0002
+Net-addr=0xadc22032 (173.194.32.50),	protocol=0000, socktype=0003
+Net-addr=0xadc22034 (173.194.32.52),	protocol=0006, socktype=0001
+Net-addr=0xadc22034 (173.194.32.52),	protocol=0017, socktype=0002
+Net-addr=0xadc22034 (173.194.32.52),	protocol=0000, socktype=0003
+Net-addr=0xadc22033 (173.194.32.51),	protocol=0006, socktype=0001
+
+(UDP) Local IP : 192.168.0.102, port = 14000
+(UDP) Dest IP  : 192.168.0.1, port = 25000
+
+Example output from test application (test_tcp_socket.cpp):
+-----------------------------------------------------------
+
+<SERVER>
+Client connected from 127.0.0.1@13000
+Received 1000000 bytes
+Sent 22 bytes
+Received 0 bytes
+Client closed connection
+
+<CLIENT>
+Connected to server at 127.0.0.1@14000
+Sent 1000000 bytes
+Received 22 bytes : Server ready to close
+Close connection to server
+
+Example output from test application (test_udp_socket.cpp):
+-----------------------------------------------------------
+
+<SERVER>
+Client sent data from 127.0.0.1@13000, peek data 1 bytes
+Received 1000 bytes
+Sent 22 bytes
+
+<CLIENT>
+Send data to server at 127.0.0.1@14000
+Sent 1000 bytes
+Received 22 bytes : Server ready to close

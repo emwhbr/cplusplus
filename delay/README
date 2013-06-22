@@ -1,4 +1,4 @@
-C/C++ support that allows the calling thread to sleep in Linux.
+C/C++ support that allows the calling thread to sleep/delay in Linux.
 
 The code is based on 'clock_nanosleep' and tries to make use of one of the
 following clock identifiers: 
@@ -14,7 +14,7 @@ done to avoid the need of repeatedly recalculating time to sleep.
 Files:
 ------
 delay.h		Implements the
-delay.cpp	C++ class 'timer'
+delay.cpp	C++ sleep/delay support (not a class)
 
 test_delay.cpp	Test application
 
