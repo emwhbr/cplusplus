@@ -1,0 +1,44 @@
+C++ class 'cfg_file' is a base class that encapsulates
+functionality for parsing configuration files.
+
+A typical configuration file has the following format:
+  item1=value1
+  # This is a comment
+  item2=value2
+
+The items can be one of the following types:
+    bool, string, double, int
+
+Files:
+------
+cfg_file.h		   Implements the base
+cfg_file.cpp		   C++ class 'cfg_file'
+
+test_cfg_file.h		   Example of a derived class of 'cfg_file'
+test_cfg_file.cpp	   that handles values defined in 'test.cfg'
+
+test_config_file.cpp	   Test application
+
+test.cfg		   Example configuration file
+
+Makefile		   Makefile for this project
+
+README			   This file
+
+Example output from test application (test_config_file.cpp):
+------------------------------------------------------------
+Trying existing file
+File 'test.cfg' found, values:
+	bool_test   :FALSE
+	string_test :www.kernel.org
+	double_test :88.990000
+	int_hex_test:0xcafe
+	int_dec_test:-2000
+
+Trying non-existing file
+File 'non-exisiting-test.cfg' NOT found, using default values:
+	bool_test   :TRUE
+	string_test :/usr/include/syslog.h
+	double_test :123.456000
+	int_hex_test:0xff
+	int_dec_test:1972
