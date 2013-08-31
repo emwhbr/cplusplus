@@ -16,6 +16,7 @@
 #include <errno.h>
 
 #include "thread.h"
+#include "delay.h"
 
 /////////////////////////////////////////////////////////////////////////////
 //               Public member functions
@@ -30,6 +31,18 @@ thread::thread(string thread_name)
   // Init semaphore that releases thread
   sem_init(&m_sem_release, 0, 0); // Initial value is busy
 
+  // Init condition variable/mutex for 'thread done'
+  pthread_condattr_init(&m_condattr_thread_done);
+
+  pthread_condattr_setclock(&m_condattr_thread_done,
+			    get_clock_id());
+
+  pthread_cond_init(&m_cond_thread_done,
+		    &m_condattr_thread_done);
+
+  pthread_mutex_init(&m_mutex_thread_done,
+		     NULL); // Use default mutex attributes
+
   init_members(); 
 }
 
@@ -38,6 +51,9 @@ thread::thread(string thread_name)
 thread::~thread(void)
 {
   sem_destroy(&m_sem_release);
+  pthread_mutex_destroy(&m_mutex_thread_done);
+  pthread_cond_destroy(&m_cond_thread_done);
+  pthread_condattr_destroy(&m_condattr_thread_done);
 }
 
 ////////////////////////////////////////////////////////////////
@@ -104,7 +120,8 @@ long thread::release(void)
 long thread::stop(void)
 {
   // Check if running
-  if (m_state != THREAD_STATE_EXECUTING) {
+  if ( (m_state != THREAD_STATE_EXECUTING)  &&
+       (m_state != THREAD_STATE_DONE) ) {
     return THREAD_WRONG_STATE;
   }
 
@@ -136,6 +153,54 @@ long thread::wait(void)
   m_state = THREAD_STATE_NOT_STARTED;
 
   return THREAD_SUCCESS;
+}
+
+////////////////////////////////////////////////////////////////
+
+long thread::wait_timed(double timeout_in_sec)
+{
+  int rc;
+
+  // Check if ready to wait
+  if ( (m_state != THREAD_STATE_EXECUTING) &&
+       (m_state != THREAD_STATE_DONE) ) {
+
+    return THREAD_WRONG_STATE;
+  }
+
+  struct timespec t1;
+  struct timespec t2;
+
+  if ( clock_gettime(get_clock_id(), &t1) ) {
+    return THREAD_TIME_ERROR;
+  }
+  if ( get_new_time(&t1, timeout_in_sec, &t2) != DELAY_SUCCESS ) {
+    return THREAD_TIME_ERROR;
+  }
+
+  if (pthread_mutex_lock(&m_mutex_thread_done)) {
+    return THREAD_MUTEX_ERROR;
+  }
+
+  // Check if thread already completed
+  if (m_state != THREAD_STATE_DONE) {
+
+    // Wait for thread to complete using timeout
+    rc = pthread_cond_timedwait(&m_cond_thread_done,
+				&m_mutex_thread_done,
+				&t2);
+    if ( rc ) {
+      pthread_mutex_unlock(&m_mutex_thread_done);
+      return THREAD_PTHREAD_ERROR;
+    }
+  }
+
+  if (pthread_mutex_unlock(&m_mutex_thread_done)) {
+    return THREAD_MUTEX_ERROR;
+  }
+
+  // Join thread
+  return wait();
 }
 
 ////////////////////////////////////////////////////////////////
@@ -234,7 +299,27 @@ void thread::run(void *p_arg)
     m_status |= THREAD_STATUS_CLEANUP_FAILED;
   }
 
-  m_state = THREAD_STATE_DONE;
+  /////////////////////////////
+  // Done
+  /////////////////////////////
+  try {
+    if (pthread_mutex_lock(&m_mutex_thread_done)) {
+      m_status |= THREAD_STATUS_DONE_FAILED;
+    }
+
+    m_state = THREAD_STATE_DONE;
+
+    if (pthread_mutex_unlock(&m_mutex_thread_done)) {
+      m_status |= THREAD_STATUS_DONE_FAILED;
+    }
+    
+    if (pthread_cond_broadcast(&m_cond_thread_done)) {
+      m_status |= THREAD_STATUS_DONE_FAILED;
+    }    
+  }
+  catch (...) {
+    m_status |= THREAD_STATUS_DONE_FAILED;
+  }
 }
 
 ////////////////////////////////////////////////////////////////

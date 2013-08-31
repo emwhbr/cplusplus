@@ -26,23 +26,26 @@ using namespace std;
 #define THREAD_WRONG_STATE      -1
 #define THREAD_PTHREAD_ERROR    -2
 #define THREAD_SEMAPHORE_ERROR  -3
-#define THREAD_INTERNAL_ERROR   -4 // Used by derived class
+#define THREAD_MUTEX_ERROR      -4
+#define THREAD_TIME_ERROR       -5
+#define THREAD_INTERNAL_ERROR   -6 // Used by derived class
 
 /////////////////////////////////////////////////////////////////////////////
 //               Class support types
 /////////////////////////////////////////////////////////////////////////////
 
-typedef enum {THREAD_STATE_NOT_STARTED,
-	      THREAD_STATE_STARTED,
-	      THREAD_STATE_SETUP_DONE,
-	      THREAD_STATE_EXECUTING,
-	      THREAD_STATE_DONE} THREAD_STATE;
+typedef enum {THREAD_STATE_NOT_STARTED = 10,
+	      THREAD_STATE_STARTED     = 20,
+	      THREAD_STATE_SETUP_DONE  = 30,
+	      THREAD_STATE_EXECUTING   = 40,
+	      THREAD_STATE_DONE        = 50} THREAD_STATE;
 
 // Bitmask values for decoding thread status
 #define THREAD_STATUS_OK              0
 #define THREAD_STATUS_SETUP_FAILED    1
 #define THREAD_STATUS_EXECUTE_FAILED  2
 #define THREAD_STATUS_CLEANUP_FAILED  4
+#define THREAD_STATUS_DONE_FAILED     5
 
 /////////////////////////////////////////////////////////////////////////////
 //               Definition of classes
@@ -58,6 +61,9 @@ class thread {
   long release(void);       // Release thread (execute)
   long stop(void);          // Order thread to stop executing
   long wait(void);          // Wait for thread to complete (Pthread-join)
+  
+  long wait_timed(double timeout_in_sec); // Wait for thread to complete
+                                          // using a timeoute (Pthread-timed-join)
 
   THREAD_STATE get_state(void) {return m_state;} // Thread state
   unsigned get_status(void) {return m_status;}   // Thread status
@@ -95,6 +101,11 @@ class thread {
   pthread_t m_thread;  // Thread handle
   pid_t     m_tid;     // Thread ID
   pid_t     m_pid;     // Thread PID
+
+  // Handles/signals 'thread done'
+  pthread_cond_t     m_cond_thread_done;
+  pthread_condattr_t m_condattr_thread_done;
+  pthread_mutex_t    m_mutex_thread_done;
   
   unsigned m_exe_cnt;  // Thread execution counter
   bool     m_stop;     // Thread has been ordered to stop

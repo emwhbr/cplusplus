@@ -98,13 +98,11 @@ $(TIMER_OBJ) : $(TIMER_DIR)/timer.cpp
 
 .PHONY : clean help
 
-test_app1 : $(TEST_OBJS1)
-	$(CC) $(LINK_FLAGS) -o $(TEST_APP_NAME1) $(TEST_OBJS1) $(LIBS)
+test_app1 : $(TEST_OBJS1) $(DELAY_OBJ)
+	$(CC) $(LINK_FLAGS) -o $(TEST_APP_NAME1) $(TEST_OBJS1) $(DELAY_OBJ) $(LIBS)
 
 test_app2 : $(TEST_OBJS2) $(DELAY_OBJ) $(TIMER_OBJ)
 	$(CC) $(LINK_FLAGS) -o $(TEST_APP_NAME2) $(TEST_OBJS2) $(DELAY_OBJ) $(TIMER_OBJ) $(LIBS)
-
-all : test_app
 
 clean :
 	rm -f $(TEST_OBJS1) $(TEST_OBJS2) $(DELAY_OBJ) $(TIMER_OBJ) $(OBJ_DIR)/*.$(ARCH) *~

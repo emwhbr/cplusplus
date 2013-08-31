@@ -30,6 +30,13 @@ cyclic_thread::~cyclic_thread(void)
 {
 }
 
+////////////////////////////////////////////////////////////////
+
+double cyclic_thread::get_frequency(void)
+{
+  return m_frequency;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 //               Protected member functions
 /////////////////////////////////////////////////////////////////////////////
@@ -39,7 +46,6 @@ cyclic_thread::~cyclic_thread(void)
 long cyclic_thread::execute(void *arg)
 {
   const float delay_interval = 1.0 / m_frequency;
-  const clockid_t the_clock = get_clock_id();
 
   struct timespec t1;
   struct timespec t2; 
@@ -50,9 +56,15 @@ long cyclic_thread::execute(void *arg)
   }
 
   // Prepare first run
-  clock_gettime(the_clock, &t1);
-  get_new_time(&t1, delay_interval, &t2);
-  delay_until(&t2);
+  if ( clock_gettime(get_clock_id(), &t1) ) {
+    return THREAD_TIME_ERROR;
+  }
+  if ( get_new_time(&t1, delay_interval, &t2) != DELAY_SUCCESS ) {
+    return THREAD_TIME_ERROR;
+  }
+  if ( delay_until(&t2) != DELAY_SUCCESS) {
+    return THREAD_TIME_ERROR;
+  }
 
   while ( !is_stopped() ) {
 
@@ -62,7 +74,9 @@ long cyclic_thread::execute(void *arg)
     }
 
     // Calculate next interval
-    get_new_time(&t2, delay_interval, &t2);
+    if ( get_new_time(&t2, delay_interval, &t2) != DELAY_SUCCESS ) {
+      return THREAD_TIME_ERROR;
+    }
     if ( delay_until(&t2) != DELAY_SUCCESS) {
       return THREAD_TIME_ERROR;
     }

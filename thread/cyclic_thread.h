@@ -20,9 +20,6 @@ using namespace std;
 //               Definition of macros
 /////////////////////////////////////////////////////////////////////////////
 
-// Return codes
-#define THREAD_TIME_ERROR  (THREAD_INTERNAL_ERROR - 1)
-
 /////////////////////////////////////////////////////////////////////////////
 //               Definition of classes
 /////////////////////////////////////////////////////////////////////////////
@@ -33,6 +30,8 @@ class cyclic_thread : public thread {
   cyclic_thread(string thread_name,
 		double frequency);
   ~cyclic_thread(void);
+
+  double get_frequency(void);
 
  protected:
   virtual long setup(void) = 0;    // Pure virtual function
