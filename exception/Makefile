@@ -85,4 +85,4 @@ clean :
 
 help:
 	@echo "Usage: make clean"
-	@echo "       mapp test_app"
+	@echo "       make test_app"

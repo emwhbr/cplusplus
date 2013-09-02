@@ -109,5 +109,5 @@ clean :
 
 help:
 	@echo "Usage: make clean"
-	@echo "       mapp test_app1"
-	@echo "       mapp test_app2"
+	@echo "       make test_app1"
+	@echo "       make test_app2"
