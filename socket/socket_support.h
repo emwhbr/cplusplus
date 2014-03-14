@@ -27,7 +27,8 @@
 #define SOCKET_SUPPORT_IS_CONNECTED    -4
 #define SOCKET_SUPPORT_CONNECT_REFUSED -5
 #define SOCKET_SUPPORT_ADDR_IN_USE     -6
-#define SOCKET_SUPPORT_FAILURE         -7
+#define SOCKET_SUPPORT_BROKEN_PIPE     -7
+#define SOCKET_SUPPORT_FAILURE         -8
 
 // Special IP-addresses
 #define ANY_IP_ADDRESS       "ANY_IP_ADDRESS"

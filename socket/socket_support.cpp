@@ -49,7 +49,7 @@
 // get_socket_local_address  getsockname   -
 // get_socket_peer_address   getpeername   ENOTCONN
 // send_socket_unconnected   sendto        EWOULDBLOCK, EINTR, EISCONN
-// send_socket               send          EWOULDBLOCK, EINTR, ENOTCONN
+// send_socket               send          EWOULDBLOCK, EINTR, ENOTCONN, EPIPE
 // recv_socket_unconnected   recvfrom      EWOULDBLOCK, EINTR
 // recv_socket               recv          EWOULDBLOCK, EINTR, ENOTCONN,
 // shutdown_socket           shutdown      ENOTCONN
@@ -86,6 +86,9 @@ static inline long get_error_code(int local_errno)
   case EWOULDBLOCK:
     return SOCKET_SUPPORT_WOULD_BLOCK;
     break;
+  case EPIPE:
+    return SOCKET_SUPPORT_BROKEN_PIPE;
+    break;
   default:
     return SOCKET_SUPPORT_FAILURE;
   }
@@ -104,7 +107,7 @@ static long do_send_socket_all(int sockd,
   int local_errno;
 
   while (total < nbytes) {
-    n = send(sockd, data+total, bytes_left, 0);
+    n = send(sockd, data+total, bytes_left, MSG_NOSIGNAL);
     if (n == -1) { local_errno = errno; break; }
     total += n;
     bytes_left -= n;
@@ -204,7 +207,7 @@ static long do_send_socket(int sockd,
       rc = send(sockd,
 		data,
 		nbytes,
-		0); // Flags
+		MSG_NOSIGNAL); // Flags
       
       if (rc == -1) {
 	int local_errno = errno;
