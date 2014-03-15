@@ -1,0 +1,38 @@
+C++ class 'sys_stat' encapsulates functionality for system
+statistics in Linux.
+
+This class reads information from the /proc file system.
+For further information, see man 5 proc.
+
+Files:
+------
+sys_stat.h		Implements the
+sys_stat.cpp		C++ class 'sys_stat'
+
+test_sys_stat.cpp	Test application
+
+Makefile		Makefile for this project
+
+README		This file
+
+Example output from test application:
+-------------------------------------
+CPU load [%]   = 1.500000
+IRQ      [-]   = 337
+Mem used [KB]  = 4242244
+Uptime   [sec] = 678221
+
+CPU load [%]   = 1.253133
+IRQ      [-]   = 321
+Mem used [KB]  = 4242244
+Uptime   [sec] = 678222
+
+CPU load [%]   = 1.253133
+IRQ      [-]   = 358
+Mem used [KB]  = 4242244
+Uptime   [sec] = 678223
+
+How to create a CPU load with a bash command:
+---------------------------------------------
+dd if=/dev/zero of=/dev/null
+while true; do true; done
