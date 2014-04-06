@@ -1,0 +1,45 @@
+C++ class 'shell_cmd' encapsulates functionality for
+executing Linux shell commands.
+
+Files:
+------
+shell_cmd.h		Implements the
+shell_cmd.cpp		C++ class 'shell_cmd'
+
+test_shell_cmd.cpp	Test application
+
+Makefile		Makefile for this project
+
+README			This file
+
+Example output from test application:
+-------------------------------------
++++++++++++++++++++++++++++++++++++++++
+Command: ping -c 3 8.8.8.8
+Output:
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=45 time=16.9 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=45 time=16.9 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=45 time=17.0 ms
+
+--- 8.8.8.8 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2002ms
+rtt min/avg/max/mdev = 16.900/16.973/17.032/0.160 ms
+
++++++++++++++++++++++++++++++++++++++++
+Command: /usr/bin/this_is_a_non_existing_command a b c
++++++++++++++++++++++++++++++++++++++++
+Command: ping -c 3 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=45 time=17.7 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=45 time=17.0 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=45 time=19.8 ms
+
+--- 8.8.8.8 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2002ms
+rtt min/avg/max/mdev = 17.017/18.203/19.888/1.224 ms
+Exit status: 0
++++++++++++++++++++++++++++++++++++++++
+Command: /usr/bin/this_is_a_non_existing_command a b c
+sh: 1: /usr/bin/this_is_a_non_existing_command: not found
+Exit status: 127
