@@ -38,6 +38,32 @@ shell_cmd::~shell_cmd(void)
 
 ////////////////////////////////////////////////////////////////
 
+long shell_cmd::check_command(const string cmd,
+			      bool &found)
+{
+  long rc;
+  string which_cmd;
+  int exit_status;
+
+  // Check if command is found and executable
+  which_cmd = "which ";
+  which_cmd.append(get_cmd_no_args(cmd));
+  which_cmd.append(" > /dev/null");
+  rc = execute_shell_cmd(which_cmd, exit_status);
+  if (rc == SHELL_CMD_SUCCESS) {
+    if (exit_status == 0) {
+      found = true;
+    }
+    else {
+      found = false;
+    }
+  }
+
+  return rc;
+}
+
+////////////////////////////////////////////////////////////////
+
 long shell_cmd::execute(const string cmd,
 			string &output)
 {
@@ -50,9 +76,12 @@ long shell_cmd::execute(const string cmd,
 
   // Check if command exists
   bool cmd_found;
-  rc = check_cmd_found(get_cmd_no_args(cmd), cmd_found);
-  if ( (rc != SHELL_CMD_SUCCESS) || (!cmd_found) ) {
-    return SHELL_CMD_FAILURE;
+  rc = check_command(cmd, cmd_found);
+  if (rc != SHELL_CMD_SUCCESS) {
+    return rc;
+  }
+  if (!cmd_found) {
+    return SHELL_CMD_NOT_FOUND;
   }
 
   // Redirect stderr to stdout
@@ -62,7 +91,7 @@ long shell_cmd::execute(const string cmd,
   // Open pipe, invoke command
   pipe = popen(cmd.c_str(), "r");
   if (!pipe) {
-    return SHELL_CMD_FAILURE;
+    return SHELL_CMD_FORK_FAILED;
   }
 
   // Read command standard output
@@ -74,7 +103,7 @@ long shell_cmd::execute(const string cmd,
 
   // Close pipe
   if (pclose(pipe) == -1) {
-    return SHELL_CMD_FAILURE;
+    return SHELL_CMD_WAIT_FAILED;
   }
 
   return SHELL_CMD_SUCCESS;
@@ -85,6 +114,16 @@ long shell_cmd::execute(const string cmd,
 long shell_cmd::execute(const string cmd,
 			int &exit_status)
 {
+  // Check if command exists
+  bool cmd_found;
+  long rc = check_command(cmd, cmd_found);
+  if (rc != SHELL_CMD_SUCCESS) {
+    return rc;
+  }
+  if (!cmd_found) {
+    return SHELL_CMD_NOT_FOUND;
+  }
+
   return execute_shell_cmd(cmd, exit_status);
 }
 
@@ -114,42 +153,17 @@ string shell_cmd::get_cmd_no_args(const string cmd)
 
 ////////////////////////////////////////////////////////////////
 
-long shell_cmd::check_cmd_found(const string cmd,
-				bool &found)
-{
-  long rc;
-  string which_cmd;
-  int exit_status;
-
-  // Check if command is found and executable
-  which_cmd = "which ";
-  which_cmd.append(cmd);
-  which_cmd.append(" > /dev/null");
-  rc = execute_shell_cmd(which_cmd, exit_status);
-  if ( (rc == SHELL_CMD_SUCCESS) &&
-       (exit_status == 0) ) {
-    found = true;
-  }
-  else {
-    found = false;
-  }
-
-  return rc;
-}
-
-////////////////////////////////////////////////////////////////
-
 long shell_cmd::execute_shell_cmd(const string cmd,
 				  int &exit_status)
 {
-  // Execute stream script (shutdown stream)
+  // Execute command
   int rc = system(cmd.c_str());
   if (rc == -1) {
-    return SHELL_CMD_FAILURE; // Fork failed
+    return SHELL_CMD_FORK_FAILED; // Fork failed
   }
   else {
     // Check exit status
     exit_status = WEXITSTATUS(rc);
-    return SHELL_CMD_SUCCESS; // Command executed
+    return SHELL_CMD_SUCCESS;     // Command executed
   }
 }
