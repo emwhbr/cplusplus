@@ -1,0 +1,12 @@
+Example of how to create a library component written in C++.
+The library (libio) doesn't perform any real work, but is an
+example/demonstration of various techniques.
+
+The sample library can be generated as:
+1. Static library (.a)
+ or
+2. Shared library (.so), dynamically linked
+Both variants can be built using optimization(release) or not(debug).
+
+A test application, written in C, is included to test and show
+usage of the library.
