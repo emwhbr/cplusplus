@@ -1,3 +1,6 @@
+========================================================
+=====                  LIBIO                       =====
+========================================================
 Example of how to create a library component written in C++.
 The library (libio) doesn't perform any real work, but is an
 example/demonstration of various techniques.
@@ -10,3 +13,116 @@ Both variants can be built using optimization(release) or not(debug).
 
 A test application, written in C, is included to test and show
 usage of the library.
+
+========================================================
+=====                  LIBJOY                      =====
+========================================================
+Library component that encapsulates functionality for
+using a joystick in an application.
+
+Tested using a "Logitech Extreme 3D".
+
+Output from test applicaton:
+----------------------------
+
+  1. (test) get product info
+  2. get last error + get error string
+  3. initialize
+  4. finalize
+  5. get joystick info
+  6. get joystick events
+  7. get pos unit circle
+  8. get joystick positions (unit circle)
+100. Exit
+
+Enter choice : 3
+Enter joystick device[0..1]: 0
+Non-block[0=false, 1=true]: 0
+
+  1. (test) get product info
+  2. get last error + get error string
+  3. initialize
+  4. finalize
+  5. get joystick info
+  6. get joystick events
+  7. get pos unit circle
+  8. get joystick positions (unit circle)
+100. Exit
+
+Enter choice : 5
+Enter joystick device[0..1]: 0
+Name:Logitech Logitech Extreme 3D, Axis:6, Buttons:12
+
+  1. (test) get product info
+  2. get last error + get error string
+  3. initialize
+  4. finalize
+  5. get joystick info
+  6. get joystick events
+  7. get pos unit circle
+  8. get joystick positions (unit circle)
+100. Exit
+
+Enter choice : 6
+Enter joystick device[0..1]: 0
+Press ENTER to quit...
+      1=>Type:81, Value:     0, Number:  0
+      2=>Type:81, Value:     0, Number:  1
+      3=>Type:81, Value:     0, Number:  2
+      4=>Type:81, Value:     0, Number:  3
+      5=>Type:81, Value:     0, Number:  4
+      6=>Type:81, Value:     0, Number:  5
+      7=>Type:81, Value:     0, Number:  6
+      8=>Type:81, Value:     0, Number:  7
+      9=>Type:81, Value:     0, Number:  8
+     10=>Type:81, Value:     0, Number:  9
+     11=>Type:81, Value:     0, Number: 10
+     12=>Type:81, Value:     0, Number: 11
+     13=>Type:82, Value:     0, Number:  0
+     14=>Type:82, Value:     0, Number:  1
+     15=>Type:82, Value:     0, Number:  2
+     16=>Type:82, Value: -3041, Number:  3
+     17=>Type:82, Value:     0, Number:  4
+     18=>Type:82, Value:     0, Number:  5
+
+  1. (test) get product info
+  2. get last error + get error string
+  3. initialize
+  4. finalize
+  5. get joystick info
+  6. get joystick events
+  7. get pos unit circle
+  8. get joystick positions (unit circle)
+100. Exit
+
+Enter choice : 8
+Enter joystick device[0..1]: 0
+Press ENTER to quit...
+     15=>theta:  0.0(deg)
+     16=>theta:  0.0(deg)
+     17=>theta:  0.0(deg)
+     18=>theta: 11.4(deg)
+     19=>theta:  8.2(deg)
+     20=>theta: 29.8(deg)
+     21=>theta: 45.0(deg)
+     22=>theta: 48.8(deg)
+
+  1. (test) get product info
+  2. get last error + get error string
+  3. initialize
+  4. finalize
+  5. get joystick info
+  6. get joystick events
+  7. get pos unit circle
+  8. get joystick positions (unit circle)
+100. Exit
+
+Enter choice : 7
+x-value[-32767..32767]: 16384
+y-value[-32767..32767]: -16384
+UNIT CIRCLE
+  x: 0.500015
+  y: 0.500015
+      r: 0.661455
+  theta: 0.785398(rad), 45.000001(deg)
+
