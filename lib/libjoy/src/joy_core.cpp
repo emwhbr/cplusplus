@@ -26,7 +26,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #define PRODUCT_NUMBER   "LIBJOY"
-#define RSTATE           "R1A01"
+#define RSTATE           "R1A02"
 
 #define ERROR_MUTEX_LOCK(mutex)				\
   ( __extension__ ( { if (pthread_mutex_lock(&mutex)) {	\
@@ -536,16 +536,18 @@ long joy_core::internal_get_pos_unit_circle(int16_t x_value,
 					    JOY_POS_UNIT_CIRCLE *pos)
 {
   const float x0 = x_value / 32767.0f;
-  const float y0 = -y_value / 32767.0f;
+  const float y0 = -y_value / 32767.0f; // Note! axis direction
 
-  float x  = x0 * sqrt(1 - pow(y0, 2)/2.0f);
-  float y  = y0 * sqrt(1 - pow(x0, 2)/2.0f);
+  const float x = x0 * sqrt(1 - pow(y0, 2)/2.0f);
+  const float y = y0 * sqrt(1 - pow(x0, 2)/2.0f);
  
+  // Cartesian
   pos->x = x0;
   pos->y = y0;
-         
+  
+  // Polar
   pos->theta = atan2(y, x);
-  pos->r = sqrt(pow(y, 2) + pow(x, 2));
+  pos->r = sqrt(pow(y0, 2) + pow(x0, 2));
 
   return JOY_SUCCESS;
 }

@@ -123,6 +123,24 @@ y-value[-32767..32767]: -16384
 UNIT CIRCLE
   x: 0.500015
   y: 0.500015
-      r: 0.661455
+      r: 0.707128
   theta: 0.785398(rad), 45.000001(deg)
 
+ 1. (test) get product info
+  2. get last error + get error string
+  3. initialize
+  4. finalize
+  5. get joystick info
+  6. get joystick events
+  7. get pos unit circle
+  8. get joystick positions (unit circle)
+100. Exit
+
+Enter choice : 7
+x-value[-32767..32767]: -16384
+y-value[-32767..32767]: -16384
+UNIT CIRCLE
+  x: -0.500015
+  y: 0.500015
+      r: 0.707128
+  theta: 2.356194(rad), 135.000004(deg)

@@ -1,3 +1,16 @@
+==================================================================
+
+3/5-2014 Bonden i Nol
+
+*) R1A02
+
+*) Fixed bug in joy_core::internal_get_pos_unit_circle() when
+   calculating polar coordinates.
+
+*) To execute test application (shared library)
+   LD_LIBRARY_PATH=./obj:$LD_LIBRARY_PATH obj/test_libjoy_rel.x86_64
+
+==================================================================
 
 ==================================================================
 
