@@ -98,14 +98,17 @@ Press ENTER to quit...
 Enter choice : 8
 Enter joystick device[0..1]: 0
 Press ENTER to quit...
-     15=>theta:  0.0(deg)
-     16=>theta:  0.0(deg)
-     17=>theta:  0.0(deg)
-     18=>theta: 11.4(deg)
-     19=>theta:  8.2(deg)
-     20=>theta: 29.8(deg)
-     21=>theta: 45.0(deg)
-     22=>theta: 48.8(deg)
+     13=> x=0.000, y=0.000, r=0.000, theta:  0.0
+     14=> x=0.000, y=0.000, r=0.000, theta:  0.0
+     19=> x=0.016, y=0.000, r=0.016, theta:  0.0
+     20=> x=0.026, y=0.000, r=0.026, theta:  0.0
+     21=> x=0.036, y=0.000, r=0.036, theta:  0.0
+     22=> x=0.047, y=0.000, r=0.047, theta:  0.0
+     23=> x=0.047, y=0.010, r=0.048, theta: 12.5
+     24=> x=0.047, y=0.036, r=0.059, theta: 37.9
+     25=> x=0.047, y=0.057, r=0.074, theta: 50.7
+     26=> x=0.057, y=0.057, r=0.081, theta: 45.0
+     27=> x=0.057, y=0.078, r=0.097, theta: 53.8
 
   1. (test) get product info
   2. get last error + get error string

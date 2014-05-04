@@ -119,8 +119,8 @@ static void get_prod_info(void)
     printf(TEST_LIBJOY_ERROR_MSG);
     return;
   }
-  printf("LIBIO prod num: %s\n", prod_info.prod_num);
-  printf("LIBIO rstate  : %s\n", prod_info.rstate);
+  printf("LIBJOY prod num: %s\n", prod_info.prod_num);
+  printf("LIBJOY rstate  : %s\n", prod_info.rstate);
 }
 
 /*****************************************************************/
@@ -142,16 +142,16 @@ static void get_last_error(void)
 
   switch (status.error_source) {
   case JOY_INTERNAL_ERROR:
-    printf("LIBIO error source : JOY_INTERNAL_ERROR\n");
+    printf("LIBJOY error source : JOY_INTERNAL_ERROR\n");
     break;
   case JOY_LINUX_ERROR:
-    printf("LIBIO error source : JOY_LINUX_ERROR\n");
+    printf("LIBJOY error source : JOY_LINUX_ERROR\n");
     break;
   default:
-    printf("LIBIO error source : *** UNKNOWN\n");
+    printf("LIBJOY error source : *** UNKNOWN\n");
   }
-  printf("LIBIO error code   : %ld\n", status.error_code);
-  printf("LIBIO error string : %s\n",  error_string);
+  printf("LIBJOY error code   : %ld\n", status.error_code);
+  printf("LIBJOY error string : %s\n",  error_string);
 }
 
 /*****************************************************************/
@@ -324,7 +324,12 @@ static void get_joystick_positions(void)
       // Convert to unit circle
       joy_get_pos_unit_circle(x_value, y_value, &pos);
 
-      printf("%7u=>theta: %4.1f(deg)\n", cnt, pos.theta * 180.0f/C_PI);
+      printf("%7u=> x=%.3f, y=%.3f, r=%.3f, theta: %4.1f\n",
+	     cnt,
+	     pos.x,
+	     pos.y,
+	     pos.r,
+	     pos.theta * 180.0f/C_PI);
     }
   }
 }
