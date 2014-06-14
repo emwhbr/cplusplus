@@ -1,0 +1,42 @@
+Template C++ class 'msg_fifo_queue' implements a FIFO queue
+for arbitrary classes. Based on C++ STL deque class and provides
+protection by Pthread mutex and condition variable.
+
+Typical usage is by one pair of threads acting as producer/consumer
+but many consumer threads can also be used. Consuming threads wait
+until the queue has some elements. 
+
+Files:
+------
+msg_fifo_queue.h	  Template C++ class 'msg_fifo_queue'
+
+cmd_queue.cpp		  Class that instantiates 'msg_fifo_queue'
+cmd_queue.h		  to insert command items in FIFO
+
+test_msg_fifo_queue.cpp	  Test application
+
+Makefile		  Makefile for this project
+
+README			  This file
+
+
+Example output from test application:
+-------------------------------------
+fifo size=2
+COMMAND_thread - Started, expected commands=7
+size=3
+cmd=aaaa, value=1111
+size=2
+cmd=bbbb, value=2222
+size=1
+cmd=command-0000, value=0
+size=0
+cmd=command-0001, value=1
+size=0
+cmd=command-0002, value=2
+size=0
+cmd=command-0003, value=3
+size=0
+cmd=command-0004, value=4
+fifo size=0
+FIFO empty
