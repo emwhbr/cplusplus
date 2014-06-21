@@ -25,6 +25,7 @@ using namespace std;
 #define CMD_QUEUE_SUCCESS       0
 #define CMD_QUEUE_FAILURE      -1
 #define CMD_QUEUE_WOULD_BLOCK  -2
+#define CMD_QUEUE_TIMEDOUT     -3
 
 /////////////////////////////////////////////////////////////////////////////
 //               Class support types
@@ -48,6 +49,9 @@ class cmd_queue
 
   long recv(CMD_QUEUE_ITEM &item,
 	    bool wait);
+
+  long recv(CMD_QUEUE_ITEM &item,
+	    double timeout_in_sec);
 
   long size(unsigned &value);
 

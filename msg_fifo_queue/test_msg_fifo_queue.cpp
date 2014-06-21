@@ -24,6 +24,9 @@ typedef struct {
   cmd_queue *cmd_fifo;
 } THREAD_FUNC_MSG;
 
+// Global variables
+static bool g_cmd_thread_done = false;
+
 // Thread function prototypes
 static void *cmd_thread_func(void *ptr);
 
@@ -47,6 +50,35 @@ static void *cmd_thread_func(void *ptr)
     printf("cmd=%s, value=%d\n",
 	   item.cmd.c_str(), item.value);  
   }
+
+  // Test of timeout (shall timeout)
+  printf("%s - All commands received, wait using timeout(5s)\n",
+	 msg->info);
+  if (cmd_fifo->recv(item, 5.0) == CMD_QUEUE_TIMEDOUT) {
+    printf("Timeout occurred\n");
+  } else {
+    printf("*** No Timeout occurred\n");
+  };
+  printf("%s - All commands received, wait using timeout(2s)\n",
+	 msg->info);
+  if (cmd_fifo->recv(item, 2.0) == CMD_QUEUE_TIMEDOUT) {
+    printf("Timeout occurred\n");
+  } else {
+    printf("*** No Timeout occurred\n");
+  };
+
+  g_cmd_thread_done = true; // Signal main
+
+  // Test of timeout (shall NOT timeout)
+  // Main is sending one last command
+  printf("%s - All commands received, wait using timeout(5s)\n",
+	 msg->info);
+  if (cmd_fifo->recv(item, 5.0) == CMD_QUEUE_SUCCESS) {
+    printf("cmd=%s, value=%d\n",
+	   item.cmd.c_str(), item.value);
+  } else {
+    printf("*** Error receiving last command\n");
+  };
 
   return NULL;
 }
@@ -109,6 +141,14 @@ int main(int argc, char *argv[])
     sleep(1);
   }
 
+  // Wait for command thread to process all commands
+  while (!g_cmd_thread_done) {
+    sleep(1);
+  }
+  item.cmd   = "cccc";
+  item.value = 3333;
+  cmd_fifo->send(item);
+
   // Wait for command thread to complete
   rc = pthread_join(cmd_thread, NULL);
   if (rc) {
@@ -125,7 +165,7 @@ int main(int argc, char *argv[])
     printf("FIFO empty\n");
   }
   else {
-    printf("FIFO not empty\n");
+    printf("*** FIFO not empty\n");
   }
 
   delete cmd_fifo;

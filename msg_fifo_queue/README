@@ -38,5 +38,11 @@ size=0
 cmd=command-0003, value=3
 size=0
 cmd=command-0004, value=4
+COMMAND_thread - All commands received, wait using timeout(5s)
+Timeout occurred
+COMMAND_thread - All commands received, wait using timeout(2s)
+Timeout occurred
+COMMAND_thread - All commands received, wait using timeout(5s)
+cmd=cccc, value=3333
 fifo size=0
 FIFO empty

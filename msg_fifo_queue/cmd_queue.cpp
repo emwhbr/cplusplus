@@ -61,6 +61,26 @@ long cmd_queue::recv(CMD_QUEUE_ITEM &item,
 
 ////////////////////////////////////////////////////////////////
 
+long cmd_queue::recv(CMD_QUEUE_ITEM &item,
+		     double timeout_in_sec)
+{
+  long rc;
+
+  rc = m_queue.pop_timed(item, timeout_in_sec);
+  if (rc != MFQ_SUCCESS) {
+    if (rc == MFQ_TIMEDOUT) { 
+      return CMD_QUEUE_TIMEDOUT;
+    }
+    else {
+      return CMD_QUEUE_FAILURE;
+    }
+  }
+
+  return CMD_QUEUE_SUCCESS;
+}
+
+////////////////////////////////////////////////////////////////
+
 long cmd_queue::size(unsigned &value)
 {
   if (m_queue.nr_elements(value) != MFQ_SUCCESS) {
