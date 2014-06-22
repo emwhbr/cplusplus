@@ -55,6 +55,8 @@ class cmd_queue
 
   long size(unsigned &value);
 
+  long clear(void);
+
  private:
   msg_fifo_queue<CMD_QUEUE_ITEM> m_queue;
 };

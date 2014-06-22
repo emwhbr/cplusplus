@@ -22,6 +22,11 @@ README			  This file
 
 Example output from test application:
 -------------------------------------
+Add dummy commands to fifo
+fifo size=2
+clear fifo...
+fifo size=0
+Add initial commands to fifo
 fifo size=2
 COMMAND_thread - Started, expected commands=7
 size=3

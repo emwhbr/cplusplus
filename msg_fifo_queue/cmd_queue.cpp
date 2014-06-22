@@ -89,3 +89,14 @@ long cmd_queue::size(unsigned &value)
 
   return CMD_QUEUE_SUCCESS;
 }
+
+////////////////////////////////////////////////////////////////
+
+long cmd_queue::clear(void)
+{
+  if (m_queue.clear() != MFQ_SUCCESS) {
+    return CMD_QUEUE_FAILURE;
+  }
+
+  return CMD_QUEUE_SUCCESS;
+}

@@ -68,6 +68,8 @@ class msg_fifo_queue
 
   long nr_elements(unsigned &value);
 
+  long clear(void);
+
  private:
   queue<T, deque<T> > m_queue; // Underlaying container is deque
   pthread_mutex_t     m_queue_mutex;
@@ -248,6 +250,29 @@ long msg_fifo_queue<T>::nr_elements(unsigned &value)
   }
 
   value = m_queue.size();
+
+  // Lockup queue
+  if (pthread_mutex_unlock(&m_queue_mutex)) {
+    return MFQ_MUTEX_ERROR;
+  }
+
+  return MFQ_SUCCESS;
+}
+
+////////////////////////////////////////////////////////////////
+
+template <class T>
+long msg_fifo_queue<T>::clear(void)
+{
+  // Lockdown queue
+  if (pthread_mutex_lock(&m_queue_mutex)) {
+    return MFQ_MUTEX_ERROR;
+  }
+
+  // Remove all elements from queue
+  while (!m_queue.empty()) {
+    m_queue.pop();
+  }
 
   // Lockup queue
   if (pthread_mutex_unlock(&m_queue_mutex)) {

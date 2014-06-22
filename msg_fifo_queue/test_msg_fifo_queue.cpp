@@ -99,7 +99,27 @@ int main(int argc, char *argv[])
     commands = atoi(argv[1]);
   }
 
+  // Add dummy commands to fifo
+  printf("Add dummy commands to fifo\n");
+  item.cmd   = "apa";
+  item.value = 123;
+  cmd_fifo->send(item);
+
+  item.cmd   = "bepa";
+  item.value = 456;
+  cmd_fifo->send(item);
+
+  cmd_fifo->size(fifo_size);
+  printf("fifo size=%u\n", fifo_size);
+
+  // Clear fifo
+  printf("clear fifo...\n");
+  cmd_fifo->clear();
+  cmd_fifo->size(fifo_size);
+  printf("fifo size=%u\n", fifo_size);
+
   // Add initial commands to fifo
+  printf("Add initial commands to fifo\n");
   item.cmd   = "aaaa";
   item.value = 1111;
   cmd_fifo->send(item);
