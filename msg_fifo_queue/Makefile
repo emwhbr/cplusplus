@@ -36,6 +36,7 @@ OBJ_DIR = ./obj
 INC_DIR = ./
 
 TEST_OBJS = $(OBJ_DIR)/cmd_queue.o \
+            $(OBJ_DIR)/item_queue.o \
 	    $(OBJ_DIR)/test_msg_fifo_queue.o
 
 TEST_APP_NAME = $(OBJ_DIR)/test_msg_fifo_queue_$(KIND).$(ARCH)

@@ -4,7 +4,10 @@ protection by Pthread mutex and condition variable.
 
 Typical usage is by one pair of threads acting as producer/consumer
 but many consumer threads can also be used. Consuming threads wait
-until the queue has some elements. 
+until the queue has some elements.
+
+Depending on template instantiation, either copies of objects
+or pointers to objects can be placed in FIFO.
 
 Files:
 ------
@@ -12,6 +15,12 @@ msg_fifo_queue.h	  Template C++ class 'msg_fifo_queue'
 
 cmd_queue.cpp		  Class that instantiates 'msg_fifo_queue'
 cmd_queue.h		  to insert command items in FIFO
+
+item.h                    Base- and derived class for object pointers
+extended_item.h           to be inserted in FIFO.
+
+item_queue.cpp            Class that instantiates 'msg_fifo_queue'
+item_queue.h              to insert object pointers in FIFO
 
 test_msg_fifo_queue.cpp	  Test application
 
@@ -22,6 +31,7 @@ README			  This file
 
 Example output from test application:
 -------------------------------------
+-------------- PART 1 -------------------
 Add dummy commands to fifo
 fifo size=2
 clear fifo...
@@ -51,3 +61,52 @@ COMMAND_thread - All commands received, wait using timeout(5s)
 cmd=cccc, value=3333
 fifo size=0
 FIFO empty
+-------------- PART 2 -------------------
+ITEM_thread - Started, expected items=10
+size=2
+id=100
+~item()
+size=1
+id=200
+EXTENDED : 300
+~extended_item()
+~item()
+size=0
+id=101
+~item()
+size=1
+id=201
+EXTENDED : 301
+~extended_item()
+~item()
+size=0
+id=102
+~item()
+size=1
+id=202
+EXTENDED : 302
+~extended_item()
+~item()
+size=0
+id=103
+~item()
+size=1
+id=203
+EXTENDED : 303
+~extended_item()
+~item()
+size=0
+id=104
+~item()
+size=1
+id=204
+EXTENDED : 304
+~extended_item()
+~item()
+Add dummy items to fifo
+fifo size=2
+clear fifo...
+~item()
+~extended_item()
+~item()
+fifo size=0
