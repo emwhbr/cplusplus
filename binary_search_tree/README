@@ -1,0 +1,57 @@
+C++ class 'bst' encapsulates functionality for a
+simple binary search tree (BST). Each node has a
+comparable key and associated data.
+
+The comparable key used in the tree is an integer
+and the associated data is also an integer.
+
+Files:
+------
+bst.h		Implements the
+bst.cpp		C++ class 'bst'
+
+test_bst.cpp	Test application
+
+Makefile	Makefile for this project
+
+README		This file
+
+Example output from test application:
+-------------------------------------
+Empty tree...
+Tree size : 0
+
+Populate tree...
+Tree size : 10
+
+Print tree...
+key=25, data=6
+key=30, data=5
+key=35, data=8
+key=40, data=1
+key=45, data=3
+key=50, data=0
+key=55, data=4
+key=60, data=2
+key=65, data=7
+key=70, data=9
+
+Search tree...
+Key(25) found, data=6
+Key(1000) not found
+
+Erase tree...
+delete key=25, data=6
+delete key=35, data=8
+delete key=30, data=5
+delete key=45, data=3
+delete key=40, data=1
+delete key=55, data=4
+delete key=70, data=9
+delete key=65, data=7
+delete key=60, data=2
+delete key=50, data=0
+Tree size : 0
+
+Search empty tree...
+Key(25) not found
