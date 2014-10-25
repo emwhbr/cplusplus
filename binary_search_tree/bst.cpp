@@ -41,7 +41,7 @@ void bst::insert(int key, int data)
 
 ////////////////////////////////////////////////////////////////
 
-bool bst::search_data(int key, int &data)
+bool bst::get_data(int key, int &data)
 {
   const BST_NODE *node = search_bst(m_root_node, key);
 
@@ -49,6 +49,47 @@ bool bst::search_data(int key, int &data)
   if (node) {
     data = node->data;
     return true;
+  }
+  else {
+    return false;
+  }
+}
+
+////////////////////////////////////////////////////////////////
+
+bool bst::get_min_key(int &key)
+{
+  const BST_NODE *node = min_key_bst(m_root_node);
+
+  // Check if key found
+  if (node) {
+    key = node->key;
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+////////////////////////////////////////////////////////////////
+
+bool bst::get_in_order_successor(int key, int &succ_key)
+{
+  const BST_NODE *node = search_bst(m_root_node, key);
+
+  // Check if key found
+  if (node) {
+
+    const BST_NODE *succ_node = in_order_successor_bst(m_root_node, node);
+
+    // Check if successor key found
+    if (succ_node) {
+      succ_key = succ_node->key;
+      return true;
+    }
+    else {
+      return false;
+    }
   }
   else {
     return false;
@@ -140,6 +181,52 @@ const BST_NODE* bst::search_bst(const BST_NODE *node, int key)
       }
     }
   }
+}
+
+////////////////////////////////////////////////////////////////
+
+BST_NODE* bst::min_key_bst(const BST_NODE *node)
+{
+  BST_NODE *current = (BST_NODE *)node;
+  
+  // Loop down to find the leftmost node
+  while (current->left) {
+    current = current->left;
+  }
+  return current;
+}
+
+////////////////////////////////////////////////////////////////
+
+BST_NODE* bst::in_order_successor_bst(BST_NODE *root,
+				      const BST_NODE *node)
+{
+  // If right subtree of node is not NULL, then succ lies
+  // in right subtree. Go to right subtree and return the
+  // node with minimum key value in right subtree.
+  if (node->right) {
+    return min_key_bst(node->right);
+  }
+  
+  BST_NODE *succ = 0;
+  
+  // Start from root and search for successor down the tree.
+  // If a node’s data is greater than root’s data then go
+  // right side, otherwise go to left side.
+  while (root) {
+    if (node->key < root->key) {
+      succ = root;
+      root = root->left;
+    }
+    else if (node->key > root->key) {
+      root = root->right;
+    }
+    else {
+      break;
+    }
+  }
+  
+  return succ;
 }
 
 ////////////////////////////////////////////////////////////////

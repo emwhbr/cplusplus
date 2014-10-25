@@ -43,7 +43,7 @@ KEY_DATA g_key_data[] =
 int main(void)
 {
   bst tree;
-  int key;
+  int key, succ_key;
   int data;
 
   printf("\nEmpty tree...\n");
@@ -61,18 +61,30 @@ int main(void)
 
   printf("\nSearch tree...\n");
   key = 25;  // Existing key 
-  if (tree.search_data(key, data)) {
+  if (tree.get_data(key, data)) {
     printf("Key(%d) found, data=%d\n", key, data);
   }
   else {
     printf("Key(%d) not found\n", key);
   }
   key = 1000; // Non-existing key
-  if (tree.search_data(key, data)) {
+  if (tree.get_data(key, data)) {
     printf("Key(%d) found, data=%d\n", key, data);
   }
   else {
     printf("Key(%d) not found\n", key);
+  }
+
+  printf("\nGet all data in order from tree...\n");
+  if (tree.get_min_key(key)) {
+
+    printf("MIN key(%d), data=%d\n", key, data);
+
+    while (tree.get_in_order_successor(key, succ_key)) {
+      tree.get_data(succ_key, data);
+      printf("SUCC key(%d), data=%d\n", succ_key, data);
+      key = succ_key;
+    }
   }
 
   printf("\nErase tree...\n");
@@ -81,7 +93,7 @@ int main(void)
 
   printf("\nSearch empty tree...\n");
   key = 25;  // Non-Existing key (tree has been erased) 
-  if (tree.search_data(key, data)) {
+  if (tree.get_data(key, data)) {
     printf("Key(%d) found, data=%d\n", key, data);
   }
   else {

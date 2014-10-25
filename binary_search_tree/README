@@ -40,6 +40,18 @@ Search tree...
 Key(25) found, data=6
 Key(1000) not found
 
+Get all data in order from tree...
+MIN key(25), data=6
+SUCC key(30), data=5
+SUCC key(35), data=8
+SUCC key(40), data=1
+SUCC key(45), data=3
+SUCC key(50), data=0
+SUCC key(55), data=4
+SUCC key(60), data=2
+SUCC key(65), data=7
+SUCC key(70), data=9
+
 Erase tree...
 delete key=25, data=6
 delete key=35, data=8

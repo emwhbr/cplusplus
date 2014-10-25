@@ -41,7 +41,11 @@ class bst {
 
   void insert(int key, int data);
 
-  bool search_data(int key, int &data);
+  bool get_data(int key, int &data);
+
+  bool get_min_key(int &key);
+
+  bool get_in_order_successor(int key, int &succ_key);
 
   int size(void);
 
@@ -57,6 +61,11 @@ class bst {
   BST_NODE* insert_bst(BST_NODE *node, int key, const int *data);
 
   const BST_NODE* search_bst(const BST_NODE *node, int key);
+
+  BST_NODE* min_key_bst(const BST_NODE *node);
+
+  BST_NODE* in_order_successor_bst(BST_NODE *root,
+				   const BST_NODE *node);
 
   int nodes_bst(const BST_NODE *node);
 
