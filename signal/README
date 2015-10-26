@@ -1,0 +1,30 @@
+C++ support for Linux signals.
+
+Files:
+------
+signal_support.h	Implements the
+signal_support.cpp	C++ signal support (not a class)
+
+test_signal.cpp		Test application
+
+Makefile		Makefile for this project
+
+README			This file
+
+Example output from test application (test_signal.cpp):
+-------------------------------------------------------
+
+MAIN : create sigwaiter thread
+MAIN : send signal to self
+THREAD: wait for signal
+SIGNAL HANDLER : Got signal(10)
+MAIN : send signal to thread
+THREAD : got signal(44)
+THREAD: wait for signal(timed)
+MAIN : send signal to thread
+THREAD : got signal(45)
+THREAD: wait for signal(peek)
+ERROR(THREAD) : wait signal(peek), rc = -3
+THREAD : got signal(-1)
+THREAD : finished
+MAIN : finished
